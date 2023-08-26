@@ -37,10 +37,11 @@ type _FileInfo struct {
 	modif_time int64
 }
 
-//PUT A MAX EMAILS COUNTER!!!!!!!! 20 PER HOUR AS SAID ON GOOGLE!!!!!!!!!!!!!!!
+// MAX_EMAILS_HOUR is the maximum number of emails that can be sent in an hour according to Google. 15 to be safe about
+// wrong multiple instantaneous calls of the Email Sender running at the same time.
+const MAX_EMAILS_HOUR = 15
 
-type _ModSpecificInfo any
-
+type _ModSpecificInfo _MGFIModSpecificInfo
 var (
 	realMain          Utils.RealMain = nil
 	modProvInfo_GL    Utils.ModProvInfo
@@ -99,24 +100,34 @@ func init() {
 					fmt.Println("--------------------")
 					fmt.Println("Sending email file " + file_to_send.file_name + " to " + mail_to + "...")
 
-					if err = Utils.SendEmailEMAIL(*file_path.ReadFile(), mail_to); nil == err {
-						fmt.Println("Email sent successfully.")
+					if modGenFileInfo_GL.ModSpecificInfo.Num_emails_hour <= MAX_EMAILS_HOUR ||
+								time.Now().Hour() != modGenFileInfo_GL.ModSpecificInfo.Hour {
+						if err = Utils.SendEmailEMAIL(*file_path.ReadFile(), mail_to); nil == err {
+							modGenFileInfo_GL.ModSpecificInfo.Num_emails_hour++
+							modGenFileInfo_GL.ModSpecificInfo.Hour = time.Now().Hour()
+							modGenFileInfo_GL.Update()
+							fmt.Println("Email sent successfully.")
 
-						// Remove the file
-						Utils.DelElemSLICES(&files_to_send, idx_to_remove)
-						if nil == os.Remove(file_path.GPathToStringConversion()) {
-							fmt.Println("File deleted successfully.")
+							// Remove the file
+							Utils.DelElemSLICES(&files_to_send, idx_to_remove)
+							if nil == os.Remove(file_path.GPathToStringConversion()) {
+								fmt.Println("File deleted successfully.")
+							} else {
+								fmt.Println("Error deleting file.")
+							}
 						} else {
-							fmt.Println("Error deleting file.")
+							fmt.Println("Error sending email.")
+
+							panic(err)
 						}
 					} else {
-						fmt.Println("Error sending email.")
+						fmt.Println("The maximum number of emails per hour has been reached. Waiting for the next hour...")
 
-						panic(err)
+						goto end_loop
 					}
 				}
 
-			end_loop:
+				end_loop:
 
 				return
 
