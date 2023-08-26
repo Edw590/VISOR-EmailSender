@@ -4,4 +4,7 @@ Email Sender module of V.I.S.O.R.
 ## About
 This repository is a submodule on the [V.I.S.O.R. - Server Version Assistant](https://github.com/Edw590/VISOR---Server-Version-Assistant) project (the main project).
 
-To know what it does, how it works, and how to compile it, go to the main repository where all is explained in the README.
+## What it does
+This module sends the emails that are queued for it to send.
+
+It works with cURL (the curl command), so it must be installed on the system and be on the PATH. It also works by sending an EML file containing the raw email information.
