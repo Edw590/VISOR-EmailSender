@@ -27,7 +27,7 @@ import (
 	"strings"
 	"time"
 
-	"VISOR_S_L/Utils"
+	"VISOR_Server/Utils"
 )
 
 // Email Sender //
