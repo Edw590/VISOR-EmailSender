@@ -1,0 +1,4 @@
+github.com/dchest/jsmin v0.0.0-20220218165748-59f39799265f h1:OGqDDftRTwrvUoL6pOG7rYTmWsTCvyEWFsMjg+HcOaA=
+github.com/dchest/jsmin v0.0.0-20220218165748-59f39799265f/go.mod h1:Dv9D0NUlAsaQcGQZa5kc5mqR9ua72SmA8VXi4cd+cBw=
+github.com/ztrue/tracerr v0.4.0 h1:vT5PFxwIGs7rCg9ZgJ/y0NmOpJkPCPFK8x0vVIYzd04=
+github.com/ztrue/tracerr v0.4.0/go.mod h1:PaFfYlas0DfmXNpo7Eay4MFhZUONqvXM+T2HyGPpngk=
