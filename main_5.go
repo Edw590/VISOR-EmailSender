@@ -100,10 +100,13 @@ func init() {
 					fmt.Println("--------------------")
 					fmt.Println("Sending email file " + file_to_send.file_name + " to " + mail_to + "...")
 
-					if modGenFileInfo_GL.ModSpecificInfo.Num_emails_hour <= MAX_EMAILS_HOUR ||
-								time.Now().Hour() != modGenFileInfo_GL.ModSpecificInfo.Hour {
+					if !reachedMaxEmailsHour() {
 						if err = Utils.SendEmailEMAIL(*file_path.ReadFile(), mail_to); nil == err {
-							modGenFileInfo_GL.ModSpecificInfo.Num_emails_hour++
+							if time.Now().Hour() != modGenFileInfo_GL.ModSpecificInfo.Hour {
+								modGenFileInfo_GL.ModSpecificInfo.Num_emails_hour = 0
+							} else {
+								modGenFileInfo_GL.ModSpecificInfo.Num_emails_hour++
+							}
 							modGenFileInfo_GL.ModSpecificInfo.Hour = time.Now().Hour()
 							modGenFileInfo_GL.Update()
 							fmt.Println("Email sent successfully.")
@@ -134,4 +137,17 @@ func init() {
 				modGenFileInfo_GL.LoopSleep(5)
 			}
 		}
+}
+
+/*
+reachedMaxEmailsHour returns true if the maximum number of emails per hour has been reached.
+
+-----------------------------------------------------------
+
+– Returns:
+  - true if the maximum number of emails per hour has been reached.
+ */
+func reachedMaxEmailsHour() bool {
+	return modGenFileInfo_GL.ModSpecificInfo.Num_emails_hour >= MAX_EMAILS_HOUR &&
+		time.Now().Hour() == modGenFileInfo_GL.ModSpecificInfo.Hour
 }
