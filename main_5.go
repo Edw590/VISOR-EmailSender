@@ -55,7 +55,7 @@ func init() {
 			modProvInfo_GL = realMain_param_1
 			modGenFileInfo_GL = realMain_param_2.(Utils.ModGenFileInfo[_ModSpecificInfo])
 
-			var to_send_dir Utils.GPath = modProvInfo_GL.Data_dir.Add(Utils.TO_SEND_REL_FOLDER)
+			var to_send_dir Utils.GPath = modProvInfo_GL.UserData_dir.Add(Utils.TO_SEND_REL_FOLDER)
 
 			fmt.Println("Checking for emails to send in \"" + to_send_dir.GPathToStringConversion() + "\"...")
 
