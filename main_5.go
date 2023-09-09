@@ -27,7 +27,7 @@ import (
 	"strings"
 	"time"
 
-	"VISOR_Server/Utils"
+	"Utils"
 )
 
 // Email Sender //
@@ -101,7 +101,7 @@ func init() {
 					fmt.Println("Sending email file " + file_to_send.file_name + " to " + mail_to + "...")
 
 					if !reachedMaxEmailsHour() {
-						if err = Utils.SendEmailEMAIL(*file_path.ReadFile(), mail_to); nil == err {
+						if err = Utils.SendEmailEMAIL(*file_path.ReadFile(), mail_to, false); nil == err {
 							if time.Now().Hour() != modGenFileInfo_GL.ModSpecificInfo.Hour {
 								modGenFileInfo_GL.ModSpecificInfo.Num_emails_hour = 0
 							} else {
@@ -119,7 +119,7 @@ func init() {
 								fmt.Println("Error deleting file.")
 							}
 						} else {
-							fmt.Println("Error sending email.")
+							fmt.Println("Error sending email with error\n" + Utils.GetFullErrorMsgGENERAL(err))
 
 							panic(err)
 						}
