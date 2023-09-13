@@ -24,6 +24,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -104,11 +105,10 @@ func init() {
 						if err = Utils.SendEmailEMAIL(*file_path.ReadFile(), mail_to, false); nil == err {
 							if time.Now().Hour() != modGenFileInfo_GL.ModSpecificInfo.Hour {
 								modGenFileInfo_GL.ModSpecificInfo.Num_emails_hour = 0
-							} else {
-								modGenFileInfo_GL.ModSpecificInfo.Num_emails_hour++
 							}
 							modGenFileInfo_GL.ModSpecificInfo.Hour = time.Now().Hour()
-							modGenFileInfo_GL.Update()
+							modGenFileInfo_GL.ModSpecificInfo.Num_emails_hour++
+							_ = modGenFileInfo_GL.Update()
 							fmt.Println("Email sent successfully.")
 
 							// Remove the file
@@ -124,7 +124,8 @@ func init() {
 							panic(err)
 						}
 					} else {
-						fmt.Println("The maximum number of emails per hour has been reached. Waiting for the next hour...")
+						fmt.Println("The maximum number of emails per hour has been reached (" +
+							strconv.Itoa(MAX_EMAILS_HOUR) + "). Waiting for the next hour...")
 
 						goto end_loop
 					}
