@@ -21,8 +21,8 @@
 
 package main
 
-// _ModUserFileInfo is the format of the custom generated information about this specific module.
-type _MGFIModSpecificInfo struct {
+// _ModSpecInfo is the format of the custom generated information about this specific module.
+type _ModSpecInfo struct {
 	// Hour is the hour of the day when the last email was sent
 	Hour            int
 	// Num_emails_hour is the number of emails sent this hour
